@@ -2,7 +2,7 @@
 
 angular.module('routes', ['ui.router'])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
   $stateProvider
     .state('home', {
       url: "/",
@@ -14,4 +14,5 @@ angular.module('routes', ['ui.router'])
     });
   
   $urlRouterProvider.otherwise('/');
+  $locationProvider.html5Mode(true);
 });
