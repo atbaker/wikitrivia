@@ -1,3 +1,6 @@
+# Bower
+public/libs
+
 # Logs
 logs
 *.log
