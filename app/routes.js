@@ -4,11 +4,11 @@ var Question = require('./models/question');
 
 module.exports = function(app) {
   app.get('/api/questions', function(req, res) {
-      Question.find(function(err, nerds) {
+      Question.find(function(err, questions) {
         if (err)
             res.send(err);
 
-        res.json(nerds);
+        res.json(questions);
       });
   });
   
