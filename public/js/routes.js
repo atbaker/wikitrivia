@@ -13,18 +13,33 @@ angular.module('routes', ['ui.router'])
       }
     })
 
-    // setup an abstract state for the tabs directive
-    .state('game', {
-      url: '/game',
+    .state('host', {
+      url: '/host',
       abstract: true,
       template: '<ui-view/>',
-      controller: 'GameCtrl'
+      controller: 'HostCtrl'
     })
 
-    .state('game.lobby', {
+    .state('host.lobby', {
       url: '/lobby',
-      templateUrl: 'views/lobby.html',
-      controller: 'LobbyCtrl',
+      templateUrl: 'views/host/lobby.html',
+      controller: 'HostLobbyCtrl',
+      data: {
+        pageTitle: 'Lobby'
+      }
+    })
+
+    .state('client', {
+      url: '/client',
+      abstract: true,
+      template: '<ui-view/>',
+      controller: 'ClientCtrl'
+    })
+
+    .state('client.lobby', {
+      url: '/lobby',
+      templateUrl: 'views/client/lobby.html',
+      controller: 'ClientLobbyCtrl',
       data: {
         pageTitle: 'Lobby'
       }

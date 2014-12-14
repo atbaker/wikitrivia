@@ -3,16 +3,18 @@
 // modules
 var express        = require('express');
 var app            = express();
+var server         = require('http').Server(app);
+var io             = require('socket.io')(server);
+
 var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 
 // config
 var db = require('./config/db');
+mongoose.connect(db.url);
 
 var port = process.env.PORT || 8080;
-
-mongoose.connect(db.url);
 
 app.use(bodyParser.json());
 
@@ -29,11 +31,12 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(express.static(__dirname + '/public'));
 
 // routes ==================================================
-require('./app/routes')(app); // configure our routes
+require('./app/routes')(app);
+require('./app/socketRoutes')(io);
 
 // start app ===============================================
 // startup our app at http://localhost:8080
-app.listen(port);
+server.listen(port);
 
 // expose app
 exports = module.exports = app;

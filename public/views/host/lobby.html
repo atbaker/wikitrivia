@@ -5,10 +5,10 @@
     <a class="btn btn-large btn-primary">Start game</a>
   </div>
   <div class="col-md-6">
-    <h2>Current participants:</h2>
+    <h2>Players:</h2>
     <ul>
-      <li ng-repeat="player in players">
-        {{ player }}
+      <li ng-repeat="client in clients">
+        {{ client.name }}
       </li>
     </ul>
   </div>
