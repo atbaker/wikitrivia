@@ -3,8 +3,9 @@
     <h2>Question</h2>
     <p class="lead" ng-bind="question.question"></p>
     <ul>
-      <li ng-repeat="(submitter, choice) in choices">{{choice}}</li>
+      <li ng-repeat="(submitter, choice) in choices">{{choice.text}}</li>
     </ul>
+    <a ui-sref="host.question.review({id: currentQuestion})" class="btn btn-primary">Question results</a>
   </div>
   <div class="col-md-4">
     <h2>Players:</h2>

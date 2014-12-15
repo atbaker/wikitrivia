@@ -32,6 +32,12 @@ module.exports = function(io) {
       socket.broadcast.emit('question.choose', {id: message, choices: choices});
     });
 
+    socket.on('question.review', function(message) {
+      var results = game.getQuestionResults();
+      socket.emit('results', results);
+      socket.broadcast.emit('question.review');
+    });
+
     // Client events
     socket.on('setName', function(message) {
       clients[socket.id]['name'] = message;

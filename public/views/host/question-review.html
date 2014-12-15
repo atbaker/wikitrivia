@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-8">
+    <h2>Question</h2>
+    <p class="lead" ng-bind="question.question"></p>
+    {{ answers }}
+    {{ clients }}
+  </div>
+  <div class="col-md-4">
+    <h2>Players:</h2>
+    <ul>
+      <li ng-repeat="client in clients">
+        {{ client.name }} <strong ng-bind="client.score"></strong>
+      </li>
+    </ul>
+  </div>
+</div>

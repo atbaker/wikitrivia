@@ -42,6 +42,13 @@ angular.module('controllers', [])
   });
 })
 
+.controller('HostQuestionReviewCtrl', function($scope, socket) {
+  socket.on('results', function(results) {
+    $scope.answers = results.answers;
+    $scope.clients = results.players;
+  });
+})
+
 .controller('ClientCtrl', function(socket, $state) {
   socket.emit('register', 'client');
 
@@ -51,6 +58,10 @@ angular.module('controllers', [])
 
   socket.on('question.choose', function(data) {
     $state.go('client.question.choose', {id: data.id, choices: data.choices});
+  });
+
+  socket.on('question.review', function(message) {
+    $state.go('client.question.review', {id: message});
   });
 })
 

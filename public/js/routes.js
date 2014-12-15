@@ -58,6 +58,15 @@ angular.module('routes', ['ui.router'])
       }
     })
 
+    .state('host.question.review', {
+      url: '/review',
+      templateUrl: 'views/host/question-review.html',
+      controller: 'HostQuestionReviewCtrl',
+      onEnter: function($rootScope, socket) {
+        socket.emit('question.review', $rootScope.currentQuestion);
+      }
+    })
+
     .state('client', {
       url: '/client',
       abstract: true,
@@ -96,6 +105,11 @@ angular.module('routes', ['ui.router'])
       params: {
         choices: {}
       }
+    })
+
+    .state('client.question.review', {
+      url: '/review',
+      templateUrl: 'views/client/question-review.html',
     });
   
   $urlRouterProvider.otherwise('/');
