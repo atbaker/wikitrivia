@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-md-12">
+    <h2>Question #{{questionId}}</h2>
+    <form role="form" name="answerForm" ng-submit="submitAnswer(answer)" novalidate>
+      <div class="form-group">
+        <label class="control-label" for="inputAnswer">Your answer</label>
+        <input type="text" class="form-control" name="answer" id="inputAnswer" ng-model="answer" required>
+      </div>
+      <button type="submit" class="btn btn-block btn-primary">Submit</button>
+    </form>
+  </div>
+</div>

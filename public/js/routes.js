@@ -7,25 +7,45 @@ angular.module('routes', ['ui.router'])
     .state('home', {
       url: '/',
       templateUrl: 'views/home.html',
-      controller: 'HomeCtrl',
-      data: {
-        pageTitle: 'Home'
-      }
+      controller: 'HomeCtrl'
     })
 
     .state('host', {
       url: '/host',
       abstract: true,
       template: '<ui-view/>',
-      controller: 'HostCtrl'
+      controller: 'HostCtrl',
+      resolve: {
+        questions: function(Question) {
+          return Question.query().$promise;
+        }
+      }
     })
 
     .state('host.lobby', {
       url: '/lobby',
       templateUrl: 'views/host/lobby.html',
-      controller: 'HostLobbyCtrl',
-      data: {
-        pageTitle: 'Lobby'
+      controller: 'HostLobbyCtrl'
+    })
+
+    .state('host.question', {
+      url: '/question/:id',
+      abstract: true,
+      template: '<ui-view/>',
+      controller: 'HostQuestionCtrl',
+      resolve: {
+        question: function($stateParams, $rootScope) {
+          return $rootScope.questions[$stateParams.id];
+        }
+      }
+    })
+
+    .state('host.question.submit', {
+      url: '/submit',
+      templateUrl: 'views/host/question-submit.html',
+      controller: 'HostQuestionSubmitCtrl',
+      onEnter: function($rootScope, socket){
+        socket.emit('question.submit', $rootScope.nextQuestion);
       }
     })
 
@@ -39,10 +59,25 @@ angular.module('routes', ['ui.router'])
     .state('client.lobby', {
       url: '/lobby',
       templateUrl: 'views/client/lobby.html',
-      controller: 'ClientLobbyCtrl',
-      data: {
-        pageTitle: 'Lobby'
+      controller: 'ClientLobbyCtrl'
+    })
+
+    .state('client.question', {
+      url: '/question/:id',
+      abstract: true,
+      template: '<ui-view/>',
+      controller: 'ClientQuestionCtrl',
+      resolve: {
+        questionId: function($stateParams) {
+          return $stateParams.id;
+        }
       }
+    })
+
+    .state('client.question.submit', {
+      url: '/submit',
+      templateUrl: 'views/client/question-submit.html',
+      controller: 'ClientQuestionSubmitCtrl'
     });
   
   $urlRouterProvider.otherwise('/');

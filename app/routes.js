@@ -4,12 +4,14 @@ var Question = require('./models/question');
 
 module.exports = function(app) {
   app.get('/api/questions', function(req, res) {
-      Question.find(function(err, questions) {
-        if (err)
-            res.send(err);
+    var query = Question.find().limit(5); // Real limit is 10
 
-        res.json(questions);
-      });
+    query.exec(function(err, questions) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(questions);
+    });
   });
   
   app.get('*', function(req, res) {
