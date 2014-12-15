@@ -1,7 +1,7 @@
 # Fig configuration file for Wikitrivia
 
 node:
-  image: atbaker/wikitriva
+  image: atbaker/wikitrivia
   links:
     - db:mongo
   ports:
