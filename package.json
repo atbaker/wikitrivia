@@ -24,6 +24,6 @@
     "express": "^4.10.5",
     "method-override": "^2.3.0",
     "mongoose": "^3.8.20",
-    "socket.io@1.2.1"
+    "socket.io": "^1.2.1"
   }
 }
