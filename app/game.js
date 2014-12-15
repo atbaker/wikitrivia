@@ -45,7 +45,7 @@ module.exports = {
       var answer = this.answers[player];
       if (player === 'real') {
         for (var i=0; i < answer.choosers.length; i++) {
-          this.players[player].score += 100;
+          this.players[answer.choosers[i]].score += 100;
         }
       } else {
         this.players[player].score += answer.choosers.length * 50;

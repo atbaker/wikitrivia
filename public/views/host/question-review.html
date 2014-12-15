@@ -2,9 +2,15 @@
   <div class="col-md-8">
     <h2>Question</h2>
     <p class="lead" ng-bind="question.question"></p>
-    {{ answers }}
-    {{ clients }}
+
+    <h3>Who chose what</h3>
+    <ul>
+      <li ng-repeat="(player, answer) in answers">
+        <strong>{{answer.text}}</strong> <span ng-if="clients[player]">({{ clients[player].name }}'s lie)</span><span ng-if="!clients[player]">(the truth)</span> was chosen by <span ng-repeat="chooser in answer.choosers">{{ clients[chooser].name }}</span>
+      </li>
+    </ul>
   </div>
+
   <div class="col-md-4">
     <h2>Players:</h2>
     <ul>
