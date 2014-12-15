@@ -42,6 +42,10 @@ module.exports = function(io) {
       socket.broadcast.emit('question.review');
     });
 
+    socket.on('final', function() {
+      socket.broadcast.emit('final');
+    });
+
     // Client events
     socket.on('setName', function(message) {
       clients[socket.id]['name'] = message;

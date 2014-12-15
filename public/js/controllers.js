@@ -13,7 +13,7 @@ angular.module('controllers', [])
 
   $scope.nextQuestion = function() {
     if ($rootScope.currentQuestion === $rootScope.questions.length - 1) {
-      // Go to end game
+      $state.go('host.final');
     } else {
       $rootScope.currentQuestion++;
 
@@ -31,6 +31,11 @@ angular.module('controllers', [])
 
   socket.on('clientUpdate', function(data) {
     $scope.clients = data;
+  });
+
+  socket.on('results', function(results) {
+    $scope.answers = results.answers;
+    $scope.clients = results.players;
   });
 })
 
@@ -59,10 +64,24 @@ angular.module('controllers', [])
 })
 
 .controller('HostQuestionReviewCtrl', function($scope, $rootScope, socket) {
-  socket.on('results', function(results) {
-    $scope.answers = results.answers;
-    $scope.clients = results.players;
+
+})
+
+.controller('HostFinalCtrl', function($scope) {
+  var scoreboard = [];
+  for (var client in $scope.clients) {
+    scoreboard.push($scope.clients[client]);
+  }
+  scoreboard.sort(function(a, b) {
+    if (a.score > b.score) {
+      return -1;
+    }
+    if (a.score < b.score) {
+      return 1;
+    }
+    return 0;
   });
+  $scope.scoreboard = scoreboard;
 })
 
 .controller('ClientCtrl', function(socket, $state) {
@@ -78,6 +97,10 @@ angular.module('controllers', [])
 
   socket.on('question.review', function(message) {
     $state.go('client.question.review', {id: message});
+  });
+
+  socket.on('final', function() {
+    $state.go('client.final');
   });
 })
 

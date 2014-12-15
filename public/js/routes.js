@@ -67,6 +67,15 @@ angular.module('routes', ['ui.router'])
       }
     })
 
+    .state('host.final', {
+      url: '/final',
+      templateUrl: 'views/host/final.html',
+      controller: 'HostFinalCtrl',
+      onEnter: function(socket) {
+        socket.emit('final');
+      }
+    })
+
     .state('client', {
       url: '/client',
       abstract: true,
@@ -110,6 +119,11 @@ angular.module('routes', ['ui.router'])
     .state('client.question.review', {
       url: '/review',
       templateUrl: 'views/client/question-review.html',
+    })
+
+    .state('client.final', {
+      url: '/final',
+      templateUrl: 'views/client/final.html',
     });
   
   $urlRouterProvider.otherwise('/');
