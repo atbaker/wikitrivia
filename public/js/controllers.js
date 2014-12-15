@@ -7,9 +7,25 @@ angular.module('controllers', [])
   $scope.questions = Question.query();
 })
 
-.controller('HostCtrl', function($scope, $rootScope, socket, questions) {
+.controller('HostCtrl', function($scope, $rootScope, socket, $state, questions) {
   $rootScope.questions = questions;
   $rootScope.currentQuestion = 0;
+
+  $scope.nextQuestion = function() {
+    if ($rootScope.currentQuestion === $rootScope.questions.length - 1) {
+      // Go to end game
+    } else {
+      $rootScope.currentQuestion++;
+
+      // Reset the answerSubmitted and choiceSubmitted flags
+      for (var client in $scope.clients) {
+        $scope.clients[client].answerSubmitted = false;
+        $scope.clients[client].choiceSubmitted = false;
+      }
+
+      $state.go('host.question.submit', {id: $rootScope.currentQuestion});
+    }
+  };
 
   socket.emit('register', 'host');
 
@@ -42,7 +58,7 @@ angular.module('controllers', [])
   });
 })
 
-.controller('HostQuestionReviewCtrl', function($scope, socket) {
+.controller('HostQuestionReviewCtrl', function($scope, $rootScope, socket) {
   socket.on('results', function(results) {
     $scope.answers = results.answers;
     $scope.clients = results.players;
@@ -72,7 +88,7 @@ angular.module('controllers', [])
 })
 
 .controller('ClientQuestionCtrl', function($scope, questionId) {
-  $scope.questionId = questionId;
+  $scope.questionId = parseInt(questionId, 10) + 1;
 })
 
 .controller('ClientQuestionSubmitCtrl', function($scope, socket) {

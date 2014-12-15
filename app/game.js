@@ -53,5 +53,11 @@ module.exports = {
     }
 
     return {answers: this.answers, players: this.players};
+  },
+
+  nextQuestion: function() {
+    this.answers = {};
+    this.choices = [];
+    this.currentQuestion++;
   }
 };

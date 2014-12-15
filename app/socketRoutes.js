@@ -22,6 +22,10 @@ module.exports = function(io) {
       if (message === 0) {
         // This is the first question of the game
         game.startGame(clients);
+      } else {
+        // This is not the first question - prepare the
+        // game for a new question
+        game.nextQuestion();
       }
       socket.broadcast.emit('question.submit', message);
     });
