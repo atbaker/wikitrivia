@@ -44,8 +44,17 @@ angular.module('routes', ['ui.router'])
       url: '/submit',
       templateUrl: 'views/host/question-submit.html',
       controller: 'HostQuestionSubmitCtrl',
-      onEnter: function($rootScope, socket){
-        socket.emit('question.submit', $rootScope.nextQuestion);
+      onEnter: function($rootScope, socket) {
+        socket.emit('question.submit', $rootScope.currentQuestion);
+      }
+    })
+
+    .state('host.question.choose', {
+      url: '/choose',
+      templateUrl: 'views/host/question-choose.html',
+      controller: 'HostQuestionChooseCtrl',
+      onEnter: function($rootScope, socket) {
+        socket.emit('question.choose', $rootScope.currentQuestion);
       }
     })
 
@@ -78,6 +87,15 @@ angular.module('routes', ['ui.router'])
       url: '/submit',
       templateUrl: 'views/client/question-submit.html',
       controller: 'ClientQuestionSubmitCtrl'
+    })
+
+    .state('client.question.choose', {
+      url: '/choose',
+      templateUrl: 'views/client/question-choose.html',
+      controller: 'ClientQuestionChooseCtrl',
+      params: {
+        choices: {}
+      }
     });
   
   $urlRouterProvider.otherwise('/');

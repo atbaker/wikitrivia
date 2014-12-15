@@ -2,13 +2,15 @@
   <div class="col-md-8">
     <h2>Question</h2>
     <p class="lead" ng-bind="question.question"></p>
-    <a ui-sref="host.question.choose({id: currentQuestion})" class="btn btn-primary">Choose answers</a>
+    <ul>
+      <li ng-repeat="(submitter, choice) in choices">{{choice}}</li>
+    </ul>
   </div>
   <div class="col-md-4">
     <h2>Players:</h2>
     <ul>
       <li ng-repeat="client in clients">
-        {{ client.name }}<span ng-if="client.answerSubmitted"> - SUBMITTED</span>
+        {{ client.name }}<span ng-if="client.choiceSubmitted"> - HAS CHOSEN</span>
       </li>
     </ul>
   </div>

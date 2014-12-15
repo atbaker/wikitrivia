@@ -26,6 +26,12 @@ module.exports = function(io) {
       socket.broadcast.emit('question.submit', message);
     });
 
+    socket.on('question.choose', function(message) {
+      var choices = game.getChoices();
+      socket.emit('choices', choices);
+      socket.broadcast.emit('question.choose', {id: message, choices: choices});
+    });
+
     // Client events
     socket.on('setName', function(message) {
       clients[socket.id]['name'] = message;
@@ -35,6 +41,11 @@ module.exports = function(io) {
     socket.on('submitAnswer', function(message) {
       game.recordAnswer(socket.id, message);
       socket.broadcast.to(host).emit('answerSubmitted', socket.id);
+    });
+
+    socket.on('submitChoice', function(message) {
+      game.recordChoice(socket.id, message);
+      socket.broadcast.to(host).emit('choiceSubmitted', socket.id);
     });
 
   });

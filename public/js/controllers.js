@@ -9,7 +9,7 @@ angular.module('controllers', [])
 
 .controller('HostCtrl', function($scope, $rootScope, socket, questions) {
   $rootScope.questions = questions;
-  $rootScope.nextQuestion = 0;
+  $rootScope.currentQuestion = 0;
 
   socket.emit('register', 'host');
 
@@ -32,11 +32,25 @@ angular.module('controllers', [])
   });
 })
 
+.controller('HostQuestionChooseCtrl', function($scope, socket) {
+  socket.on('choices', function(choices) {
+    $scope.choices = choices;
+  });
+
+  socket.on('choiceSubmitted', function(clientId) {
+    $scope.clients[clientId].choiceSubmitted = true;
+  });
+})
+
 .controller('ClientCtrl', function(socket, $state) {
   socket.emit('register', 'client');
 
   socket.on('question.submit', function(message) {
     $state.go('client.question.submit', {id: message});
+  });
+
+  socket.on('question.choose', function(data) {
+    $state.go('client.question.choose', {id: data.id, choices: data.choices});
   });
 })
 
@@ -53,5 +67,13 @@ angular.module('controllers', [])
 .controller('ClientQuestionSubmitCtrl', function($scope, socket) {
   $scope.submitAnswer = function(answer) {
     socket.emit('submitAnswer', answer);
+  };
+})
+
+.controller('ClientQuestionChooseCtrl', function($scope, $stateParams, socket) {
+  $scope.choices = $stateParams.choices;
+
+  $scope.submitChoice = function(choice) {
+    socket.emit('submitChoice', choice);
   };
 });

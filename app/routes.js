@@ -1,6 +1,7 @@
 // app/routes.js
 
 var Question = require('./models/question');
+var game = require('./game');
 
 module.exports = function(app) {
   app.get('/api/questions', function(req, res) {
@@ -10,6 +11,7 @@ module.exports = function(app) {
       if (err) {
         res.send(err);
       }
+      game.setQuestions(questions);
       res.json(questions);
     });
   });
