@@ -1,0 +1,17 @@
+# Fig configuration file for Wikitrivia
+
+node:
+  image: atbaker/wikitriva
+  links:
+    - db:mongo
+  ports:
+    - "80:8080"
+
+data:
+  image: mongo:2.6
+  command: echo 'Data-only container'
+
+db:
+  image: mongo:2.6
+  volumes_from:
+    - data
