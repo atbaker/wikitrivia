@@ -3,7 +3,7 @@
     <h2>Question {{questionIndex + 1}} of {{questions.length}}</h2>
     <p class="lead" ng-bind="question.question"></p>
     <ul>
-      <li ng-repeat="(submitter, choice) in choices">{{choice.text}}</li>
+      <li ng-repeat="choice in choices">{{choice.text}}</li>
     </ul>
     <a ui-sref="host.question.review({id: currentQuestion._id})" class="btn btn-primary">Question results</a>
   </div>

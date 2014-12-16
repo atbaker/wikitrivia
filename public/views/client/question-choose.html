@@ -4,7 +4,7 @@
     <form role="form" name="choiceForm" ng-submit="submitChoice(choice)" novalidate>
       <div class="form-group">
         <label class="control-label" for="inputChoice">Choose the correct answer</label>
-        <select class="form-control" name="choice" id="inputChoice" ng-model="choice" ng-options="submitter as choice.text for (submitter, choice) in choices" required></select>
+        <select class="form-control" name="choice" id="inputChoice" ng-model="choice" ng-options="choice.submitter as choice.text for choice in choices" required></select>
       </div>
       <button type="submit" class="btn btn-block btn-primary">Submit</button>
     </form>
