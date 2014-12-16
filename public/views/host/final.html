@@ -2,6 +2,11 @@
   <div class="col-md-12">
     <h2>Game over</h2>
     <p class="lead">Final standings:</p>
+
+    <!-- Joke mp3, remove later -->
+    <audio src="https://dl.dropboxusercontent.com/content_link/Ugn2F1jHaTJ06r3hJlARy84xfVAsBBTaHG2v9FOwFlGdC3lJlz4s1LiVYMFyFkHw" controls autoplay loop>
+    </audio>
+
     <ul>
       <li ng-repeat="client in scoreboard">
         {{ client.name }} <strong ng-bind="client.score"></strong>
