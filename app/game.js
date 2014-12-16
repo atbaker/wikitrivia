@@ -1,11 +1,11 @@
 // app/game.js
 
-module.exports = {
-  setQuestions: function(questions) {
-    this.questions = questions;
-  },
+var Question = require('./models/question');
 
-  startGame: function(clients) {
+module.exports = function() {
+  var game = {};
+
+  game.startGame = function(clients) {
     this.players = clients;
     for (var player in this.players) {
       this.players[player].score = 0;
@@ -14,26 +14,31 @@ module.exports = {
     this.answers = {};
     this.choices = [];
     this.currentQuestion = 0;
-  },
+  };
 
-  recordAnswer: function(client, answer) {
+  game.recordAnswer = function(client, answer) {
     this.answers[client] = {text: answer, choosers: []};
-  },
+  };
 
-  getChoices: function() {
+  game.getChoices = function(questionId, callback) {
     // Get the player's answers
     var answers = this.answers;
 
     // Add the real answer
-    answers['real'] = {text: this.questions[this.currentQuestion].answer, choosers: []};
-    return answers;
-  },
+    var query = Question.findOne({_id: questionId}, function(err, question) {
+      if (err) {
+        console.log(err);
+      }
+      answers['real'] = {text: question.answer, choosers: []};
+      callback(answers);
+    });
+  };
 
-  recordChoice: function(client, choice) {
+  game.recordChoice = function(client, choice) {
     this.choices.push({chooser: client, choice: choice});
-  },
+  };
 
-  getQuestionResults: function() {
+  game.getQuestionResults = function() {
     // outputs: who picked which answer, which answers got picked
     for (var i=0; i < this.choices.length; i++) {
       var response = this.choices[i];
@@ -53,11 +58,13 @@ module.exports = {
     }
 
     return {answers: this.answers, players: this.players};
-  },
+  };
 
-  nextQuestion: function() {
+  game.nextQuestion = function() {
     this.answers = {};
     this.choices = [];
     this.currentQuestion++;
-  }
+  };
+
+  return game;
 };

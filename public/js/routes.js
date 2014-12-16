@@ -29,15 +29,10 @@ angular.module('routes', ['ui.router'])
     })
 
     .state('host.question', {
-      url: '/question/:id',
+      url: '/question',
       abstract: true,
       template: '<ui-view/>',
-      controller: 'HostQuestionCtrl',
-      resolve: {
-        question: function($stateParams, $rootScope) {
-          return $rootScope.questions[$stateParams.id];
-        }
-      }
+      controller: 'HostQuestionCtrl'
     })
 
     .state('host.question.submit', {
@@ -45,7 +40,7 @@ angular.module('routes', ['ui.router'])
       templateUrl: 'views/host/question-submit.html',
       controller: 'HostQuestionSubmitCtrl',
       onEnter: function($rootScope, socket) {
-        socket.emit('question.submit', $rootScope.currentQuestion);
+        socket.emit('question.submit', {questionId: $rootScope.currentQuestion._id, questionIndex: $rootScope.questionIndex});
       }
     })
 
@@ -54,7 +49,7 @@ angular.module('routes', ['ui.router'])
       templateUrl: 'views/host/question-choose.html',
       controller: 'HostQuestionChooseCtrl',
       onEnter: function($rootScope, socket) {
-        socket.emit('question.choose', $rootScope.currentQuestion);
+        socket.emit('question.choose', $rootScope.currentQuestion._id);
       }
     })
 
@@ -63,7 +58,7 @@ angular.module('routes', ['ui.router'])
       templateUrl: 'views/host/question-review.html',
       controller: 'HostQuestionReviewCtrl',
       onEnter: function($rootScope, socket) {
-        socket.emit('question.review', $rootScope.currentQuestion);
+        socket.emit('question.review', $rootScope.currentQuestion._id);
       }
     })
 
@@ -90,15 +85,10 @@ angular.module('routes', ['ui.router'])
     })
 
     .state('client.question', {
-      url: '/question/:id',
+      url: '/question',
       abstract: true,
       template: '<ui-view/>',
-      controller: 'ClientQuestionCtrl',
-      resolve: {
-        questionId: function($stateParams) {
-          return $stateParams.id;
-        }
-      }
+      controller: 'ClientQuestionCtrl'
     })
 
     .state('client.question.submit', {

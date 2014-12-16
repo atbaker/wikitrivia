@@ -5,7 +5,7 @@
     <ul>
       <li ng-repeat="(submitter, choice) in choices">{{choice.text}}</li>
     </ul>
-    <a ui-sref="host.question.review({id: currentQuestion})" class="btn btn-primary">Question results</a>
+    <a ui-sref="host.question.review({id: currentQuestion._id})" class="btn btn-primary">Question results</a>
   </div>
   <div class="col-md-4">
     <h2>Players:</h2>

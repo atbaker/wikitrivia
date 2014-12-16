@@ -9,13 +9,15 @@ angular.module('controllers', [])
 
 .controller('HostCtrl', function($scope, $rootScope, socket, $state, questions) {
   $rootScope.questions = questions;
-  $rootScope.currentQuestion = 0;
+  $rootScope.questionIndex = 0;
+  $rootScope.currentQuestion = $rootScope.questions[0];
 
   $scope.nextQuestion = function() {
-    if ($rootScope.currentQuestion === $rootScope.questions.length - 1) {
+    if ($rootScope.questionIndex === $rootScope.questions.length - 1) {
       $state.go('host.final');
     } else {
-      $rootScope.currentQuestion++;
+      $rootScope.questionIndex++;
+      $rootScope.currentQuestion = $rootScope.questions[$rootScope.questionIndex];
 
       // Reset the answerSubmitted and choiceSubmitted flags
       for (var client in $scope.clients) {
@@ -23,7 +25,7 @@ angular.module('controllers', [])
         $scope.clients[client].choiceSubmitted = false;
       }
 
-      $state.go('host.question.submit', {id: $rootScope.currentQuestion});
+      $state.go('host.question.submit', {questionId: $rootScope.currentQuestion._id, questionIndex: $rootScope.questionIndex});
     }
   };
 
@@ -43,11 +45,13 @@ angular.module('controllers', [])
 
 })
 
-.controller('HostQuestionCtrl', function($scope, question) {
-  $scope.question = question;
+.controller('HostQuestionCtrl', function($scope, $rootScope) {
+  $scope.question = $rootScope.currentQuestion;
 })
 
-.controller('HostQuestionSubmitCtrl', function($scope, socket) {
+.controller('HostQuestionSubmitCtrl', function($scope, $rootScope, socket) {
+  $scope.question = $rootScope.currentQuestion;
+
   socket.on('answerSubmitted', function(clientId) {
     $scope.clients[clientId].answerSubmitted = true;
   });
@@ -84,10 +88,12 @@ angular.module('controllers', [])
   $scope.scoreboard = scoreboard;
 })
 
-.controller('ClientCtrl', function(socket, $state) {
+.controller('ClientCtrl', function($state, socket) {
+  $state.questionCounter = 0;
   socket.emit('register', 'client');
 
   socket.on('question.submit', function(message) {
+    $state.questionCounter++;
     $state.go('client.question.submit', {id: message});
   });
 
@@ -110,8 +116,7 @@ angular.module('controllers', [])
   };
 })
 
-.controller('ClientQuestionCtrl', function($scope, questionId) {
-  $scope.questionId = parseInt(questionId, 10) + 1;
+.controller('ClientQuestionCtrl', function($scope) {
 })
 
 .controller('ClientQuestionSubmitCtrl', function($scope, socket) {

@@ -1,10 +1,11 @@
 // app/socketRoutes.js
 
-var game = require('./game');
+var Game = require('./game');
 
 module.exports = function(io) {
   var host;
   var clients = {};
+  var game = new Game();
 
   io.on('connection', function (socket) {
 
@@ -18,8 +19,8 @@ module.exports = function(io) {
     });
 
     // Host events
-    socket.on('question.submit', function(message) {
-      if (message === 0) {
+    socket.on('question.submit', function(data) {
+      if (data.questionIndex === 0) {
         // This is the first question of the game
         game.startGame(clients);
       } else {
@@ -27,16 +28,17 @@ module.exports = function(io) {
         // game for a new question
         game.nextQuestion();
       }
-      socket.broadcast.emit('question.submit', message);
+      socket.broadcast.emit('question.submit', data.questionId);
     });
 
-    socket.on('question.choose', function(message) {
-      var choices = game.getChoices();
-      socket.emit('choices', choices);
-      socket.broadcast.emit('question.choose', {id: message, choices: choices});
+    socket.on('question.choose', function(questionId) {
+      var choices = game.getChoices(questionId, function(choices) {
+        socket.emit('choices', choices);
+        socket.broadcast.emit('question.choose', {id: questionId, choices: choices});
+      });
     });
 
-    socket.on('question.review', function(message) {
+    socket.on('question.review', function(questionId) {
       var results = game.getQuestionResults();
       socket.emit('results', results);
       socket.broadcast.emit('question.review');
@@ -47,18 +49,18 @@ module.exports = function(io) {
     });
 
     // Client events
-    socket.on('setName', function(message) {
-      clients[socket.id]['name'] = message;
+    socket.on('setName', function(name) {
+      clients[socket.id]['name'] = name;
       socket.broadcast.to(host).emit('clientUpdate', clients);
     });
 
-    socket.on('submitAnswer', function(message) {
-      game.recordAnswer(socket.id, message);
+    socket.on('submitAnswer', function(answer) {
+      game.recordAnswer(socket.id, answer);
       socket.broadcast.to(host).emit('answerSubmitted', socket.id);
     });
 
-    socket.on('submitChoice', function(message) {
-      game.recordChoice(socket.id, message);
+    socket.on('submitChoice', function(choice) {
+      game.recordChoice(socket.id, choice);
       socket.broadcast.to(host).emit('choiceSubmitted', socket.id);
     });
 
