@@ -4,7 +4,7 @@
     <form role="form" name="answerForm" ng-submit="submitAnswer(answer)" novalidate>
       <div class="form-group">
         <label class="control-label" for="inputAnswer">Your answer</label>
-        <input type="text" class="form-control" name="answer" id="inputAnswer" ng-model="answer" required>
+        <input ng-model="answer" type="text" class="form-control" name="answer" id="inputAnswer" autocapitalize="off" required>
       </div>
       <button type="submit" class="btn btn-block btn-primary">Submit</button>
     </form>
