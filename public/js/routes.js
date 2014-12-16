@@ -40,7 +40,7 @@ angular.module('routes', ['ui.router'])
       templateUrl: 'views/host/question-submit.html',
       controller: 'HostQuestionSubmitCtrl',
       onEnter: function($rootScope, socket) {
-        socket.emit('question.submit', {questionId: $rootScope.currentQuestion._id, questionIndex: $rootScope.questionIndex});
+        socket.emit('question.submit');
       }
     })
 
@@ -58,7 +58,7 @@ angular.module('routes', ['ui.router'])
       templateUrl: 'views/host/question-review.html',
       controller: 'HostQuestionReviewCtrl',
       onEnter: function($rootScope, socket) {
-        socket.emit('question.review', $rootScope.currentQuestion._id);
+        socket.emit('question.review');
       }
     })
 
@@ -88,7 +88,10 @@ angular.module('routes', ['ui.router'])
       url: '/question',
       abstract: true,
       template: '<ui-view/>',
-      controller: 'ClientQuestionCtrl'
+      controller: 'ClientQuestionCtrl',
+      params: {
+        questionCounter: 0
+      }
     })
 
     .state('client.question.submit', {

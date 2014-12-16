@@ -19,8 +19,8 @@ module.exports = function(io) {
     });
 
     // Host events
-    socket.on('question.submit', function(data) {
-      if (data.questionIndex === 0) {
+    socket.on('question.submit', function() {
+      if (!game.started) {
         // This is the first question of the game
         game.startGame(clients);
       } else {
@@ -28,20 +28,21 @@ module.exports = function(io) {
         // game for a new question
         game.nextQuestion();
       }
-      socket.broadcast.emit('question.submit', data.questionId);
+      console.log("CURRENTQUESTION" + game.currentQuestion);
+      socket.broadcast.emit('question.submit', game.currentQuestion);
     });
 
     socket.on('question.choose', function(questionId) {
       var choices = game.getChoices(questionId, function(choices) {
         socket.emit('choices', choices);
-        socket.broadcast.emit('question.choose', {id: questionId, choices: choices});
+        socket.broadcast.emit('question.choose', {currentQuestion: game.currentQuestion, choices: choices});
       });
     });
 
-    socket.on('question.review', function(questionId) {
+    socket.on('question.review', function() {
       var results = game.getQuestionResults();
       socket.emit('results', results);
-      socket.broadcast.emit('question.review');
+      socket.broadcast.emit('question.review', game.currentQuestion);
     });
 
     socket.on('final', function() {

@@ -3,7 +3,12 @@
 var Question = require('./models/question');
 
 module.exports = function() {
-  var game = {};
+  var game = {
+    answers: {},
+    choices: [],
+    currentQuestion: 0,
+    started: false
+  };
 
   game.startGame = function(clients) {
     this.players = clients;
@@ -11,9 +16,7 @@ module.exports = function() {
       this.players[player].score = 0;
     }
 
-    this.answers = {};
-    this.choices = [];
-    this.currentQuestion = 0;
+    this.started = true;
   };
 
   game.recordAnswer = function(client, answer) {
