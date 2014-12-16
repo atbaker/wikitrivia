@@ -2,9 +2,7 @@
 
 angular.module('controllers', [])
 
-.controller('HomeCtrl', function($scope, Question) {
-  $scope.foo = 'bar';
-  $scope.questions = Question.query();
+.controller('HomeCtrl', function($scope) {
 })
 
 .controller('HostCtrl', function($scope, $rootScope, socket, $state, questions) {
