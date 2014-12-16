@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-md-8">
     <h2>Question {{questionIndex + 1}} of {{questions.length}}</h2>
+    <h5 ng-bind="question.title"></h5>
     <p class="lead" ng-bind="question.question"></p>
     <ul>
       <li ng-repeat="choice in choices">{{choice.text}}</li>
