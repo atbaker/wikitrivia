@@ -4,7 +4,7 @@ var Question = require('./models/question');
 
 module.exports = function(app) {
   app.get('/api/questions', function(req, res) {
-    var query = Question.find().limit(5); // Real limit is 10
+    var query = Question.find().limit(10);
 
     query.exec(function(err, questions) {
       if (err) {
