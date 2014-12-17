@@ -24,14 +24,18 @@ module.exports = function() {
     this.players[socketId] = {name: name, score: 0};
   };
 
-  game.recordAnswer = function(client, answer, truth) {
+  game.recordAnswer = function(client, answer) {
     if (!this.answers.hasOwnProperty(answer)) {
       this.answers[answer] = {submitters: [client], choosers: [], truth: false};
     } else {
       this.answers[answer].submitters.push(client);
     }
+  };
 
-    if (truth === true) {
+  game.setTruth = function(answer) {
+    if (!this.answers.hasOwnProperty(answer)) {
+      this.answers[answer] = {submitters: [], choosers: [], truth: true};
+    } else {
       this.answers[answer].truth = true;
     }
   };
@@ -45,7 +49,7 @@ module.exports = function() {
         console.log(err);
       }
 
-      self.recordAnswer('truth', question.answer, true);
+      self.setTruth(question.answer);
 
       var choices = Object.keys(self.answers);
       callback(utils.shuffle(choices));
@@ -70,9 +74,7 @@ module.exports = function() {
       if (answer.truth) {
         // Award 100 points to each of the submitters
         for (var i=0; i<answer.submitters.length; i++) {
-          if (answer.submitters[i] !== 'truth') {
-            this.players[answer.submitters[i]].score += 100;
-          }
+          this.players[answer.submitters[i]].score += 100;
         }
         // Award 100 points to each of the choosers
         for (var i=0; i<answer.choosers.length; i++) {
