@@ -40,6 +40,22 @@ module.exports = function() {
     }
   };
 
+  game.padAnswers = function(similarWords) {
+    if (Object.keys(this.answers).length >= 8) {
+      return;
+    }
+
+    for (var i=0; i<similarWords.length; i++) {
+      var similarWord = similarWords[i];
+      if (!this.answers.hasOwnProperty(similarWords[i])) {
+        this.answers[similarWord] = {submitters: [], choosers: [], truth: false};
+      }
+      if (Object.keys(this.answers).length === 8) {
+        break;
+      }
+    }
+  };
+
   game.getChoices = function(questionId, callback) {
     var self = this;
 
@@ -50,6 +66,7 @@ module.exports = function() {
       }
 
       self.setTruth(question.answer);
+      self.padAnswers(question.similar_words);
 
       var choices = Object.keys(self.answers);
       callback(utils.shuffle(choices));

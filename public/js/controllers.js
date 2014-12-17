@@ -68,10 +68,13 @@ angular.module('controllers', [])
         } else {
           $scope.badLies.push(answer);
         }
+
+        if (answer.submitters.length === 0) {
+          // This is one of our fake lies - add us as a submitter so users know
+          answer.submitters.push('Wikitrivia');
+        }
       } else {
         $scope.truth = answer;
-        console.log($scope.truth.choosers);
-        console.log($scope.truth.submitters);
       }
     }
   });

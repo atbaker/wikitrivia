@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var questionSchema = new Schema({
     title: {type: String},
     question: {type: String},
-    answer: {type: String}
+    answer: {type: String},
+    similar_words: [String]
 });
 
 questionSchema.statics.generateQuestionSet = function(cb) {
