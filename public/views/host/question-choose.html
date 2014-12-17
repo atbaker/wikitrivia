@@ -1,19 +1,4 @@
-<div class="row">
-  <div class="col-md-8">
-    <h2>Question {{questionIndex + 1}} of {{questions.length}}</h2>
-    <h5 ng-bind="question.title"></h5>
-    <p class="lead" ng-bind="question.question"></p>
-    <ul>
-      <li ng-repeat="choice in choices">{{choice.text}}</li>
-    </ul>
-    <a ui-sref="host.question.review({id: currentQuestion._id})" class="btn btn-primary">Question results</a>
-  </div>
-  <div class="col-md-4">
-    <h2>Players:</h2>
-    <ul>
-      <li ng-repeat="client in clients">
-        {{ client.name }}<span ng-if="client.choiceSubmitted"> - HAS CHOSEN</span>
-      </li>
-    </ul>
-  </div>
-</div>
+<h3>Choices</h3>
+<ul>
+  <li ng-repeat="choice in choices">{{choice.text}}</li>
+</ul>

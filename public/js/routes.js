@@ -31,13 +31,12 @@ angular.module('routes', ['ui.router'])
     .state('host.question', {
       url: '/question',
       abstract: true,
-      template: '<ui-view/>',
+      templateUrl: 'views/host/question-base.html',
       controller: 'HostQuestionCtrl'
     })
 
     .state('host.question.submit', {
       url: '/submit',
-      templateUrl: 'views/host/question-submit.html',
       controller: 'HostQuestionSubmitCtrl',
       onEnter: function($rootScope, socket) {
         socket.emit('question.submit');

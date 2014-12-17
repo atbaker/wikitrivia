@@ -1,0 +1,28 @@
+<div ng-switch="$state.current.name" class="row">
+  <div class="col-md-8">
+    <h2>Question {{questionIndex + 1}} of {{questions.length}}</h2>
+    <h5 ng-bind="question.title"></h5>
+    <p class="lead" ng-bind="question.question"></p>
+
+    <!-- Switch button on state -->
+    <a ng-switch-when="host.question.submit" ui-sref="host.question.choose({id: currentQuestion._id})" class="btn btn-primary">Choose answers</a>
+    <a ng-switch-when="host.question.choose" ui-sref="host.question.review({id: currentQuestion._id})" class="btn btn-primary">Question results</a>
+    <button ng-switch-when="host.question.review" ng-click="nextQuestion()" type="button" class="btn btn-primary">Next question</button>
+
+    <ui-view/>
+  </div>
+
+  <div class="col-md-4">
+    <h2>Players:</h2>
+    <ul>
+      <li ng-repeat="client in clients">
+        {{ client.name }} <strong ng-bind="client.score"></strong> 
+          <i ng-switch-when="host.question.submit" ng-if="client.answerSubmitted" class="fa fa-check"></i>
+          <i ng-switch-when="host.question.choose" ng-if="client.choiceSubmitted" class="fa fa-check"></i>
+      </li>
+    </ul>
+
+    <p>New players can join with session code <strong ng-bind="sessionNumber"></strong></p>
+  </div>
+
+</div>

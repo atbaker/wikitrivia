@@ -51,19 +51,20 @@ angular.module('controllers', [])
 })
 
 .controller('HostQuestionCtrl', function($scope, $rootScope) {
+  $scope.question = $rootScope.currentQuestion;
+
+  $rootScope.$watch('currentQuestion', function() {
+    $scope.question = $rootScope.currentQuestion;
+  });
 })
 
 .controller('HostQuestionSubmitCtrl', function($scope, $rootScope, socket) {
-  $scope.question = $rootScope.currentQuestion;
-
   socket.on('answerSubmitted', function(clientId) {
     $scope.clients[clientId].answerSubmitted = true;
   });
 })
 
 .controller('HostQuestionChooseCtrl', function($scope, $rootScope, socket) {
-  $scope.question = $rootScope.currentQuestion;
-
   socket.on('choices', function(choices) {
     $scope.choices = choices;
   });
@@ -74,7 +75,6 @@ angular.module('controllers', [])
 })
 
 .controller('HostQuestionReviewCtrl', function($scope, $rootScope, socket) {
-  $scope.question = $rootScope.currentQuestion;
 })
 
 .controller('HostFinalCtrl', function($scope) {
