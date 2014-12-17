@@ -22,6 +22,11 @@ module.exports = function(io) {
 
         sessionCounter++;
       } else {
+        if (!sessions.hasOwnProperty(data.sessionNumber)) {
+          console.error('Tried to join non-existant session');
+          return;
+        }
+
         sessionNumber = data.sessionNumber;
         session = sessions[sessionNumber];
         game = session.game;
