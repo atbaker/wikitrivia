@@ -1,12 +1,8 @@
 <div class="row">
   <div class="col-md-12">
     <h2>Question #{{questionCounter}}</h2>
-    <form role="form" name="choiceForm" ng-submit="submitChoice(choice)" novalidate>
-      <div class="form-group">
-        <label class="control-label" for="inputChoice">Choose the correct answer</label>
-        <select class="form-control" name="choice" id="inputChoice" ng-model="choice" ng-options="choice.submitter as choice.text for choice in choices" required></select>
-      </div>
-      <button type="submit" class="btn btn-block btn-primary">Submit</button>
-    </form>
+    <p ng-repeat="choice in choices">
+      <button ng-click="submitChoice(choice.submitter)" ng-bind="choice.text" type="button" class="btn btn-block btn-primary"></button>
+    </p>
   </div>
 </div>
