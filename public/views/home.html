@@ -6,6 +6,12 @@
 
   <div class="col-md-6 text-center">
     <h2>Join a game</h2>
-    <a ui-sref="client.lobby" class="btn btn-primary">Join game</a>
+    <form role="form" name="sessionForm" class="form-inline" ng-submit="joinSession(sessionNumber)" novalidate>
+      <div class="form-group">
+        <label class="control-label" for="inputSessionNumber">Session #</label>
+        <input ng-model="sessionNumber" type="number" class="form-control" name="sessionNumber" id="inputSessionNumber" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Join game</button>
+    </form>
   </div>
 </div>

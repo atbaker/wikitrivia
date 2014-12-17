@@ -2,7 +2,10 @@
 
 angular.module('controllers', [])
 
-.controller('HomeCtrl', function($scope) {
+.controller('HomeCtrl', function($scope, $state) {
+  $scope.joinSession = function(sessionNumber) {
+    $state.go('client.lobby', {sessionNumber: sessionNumber});
+  };
 })
 
 .controller('HostCtrl', function($scope, $rootScope, socket, $state, questions) {
@@ -27,7 +30,11 @@ angular.module('controllers', [])
     }
   };
 
-  socket.emit('register', 'host');
+  socket.emit('register', {client: 'host'});
+
+  socket.on('sessionNumber', function(sessionNumber) {
+    $rootScope.sessionNumber = sessionNumber;
+  });
 
   socket.on('clientUpdate', function(data) {
     $scope.clients = data;
@@ -88,8 +95,6 @@ angular.module('controllers', [])
 })
 
 .controller('ClientCtrl', function($state, socket) {
-  socket.emit('register', 'client');
-
   socket.on('question.submit', function(questionCounter) {
     $state.go('client.question.submit', {questionCounter: questionCounter});
   });
@@ -107,7 +112,9 @@ angular.module('controllers', [])
   });
 })
 
-.controller('ClientLobbyCtrl', function($scope, socket) {
+.controller('ClientLobbyCtrl', function($scope, $stateParams, socket) {
+  socket.emit('register', {client: 'client', sessionNumber: $stateParams.sessionNumber});
+
   $scope.setName = function(name) {
     socket.emit('setName', name);
   };

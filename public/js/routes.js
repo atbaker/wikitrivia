@@ -81,7 +81,10 @@ angular.module('routes', ['ui.router'])
     .state('client.lobby', {
       url: '/lobby',
       templateUrl: 'views/client/lobby.html',
-      controller: 'ClientLobbyCtrl'
+      controller: 'ClientLobbyCtrl',
+      params: {
+        sessionNumber: -1
+      }
     })
 
     .state('client.question', {

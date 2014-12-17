@@ -7,20 +7,26 @@ module.exports = function(io) {
   var sessions = {};
 
   io.on('connection', function (socket) {
-    var session, game;
+    var sessionNumber, session, game;
 
-    socket.on('register', function (message) {
-      if (message === 'host') {
-        sessionCounter++;
+    socket.on('register', function (data) {
+      if (data.client === 'host') {
         sessions[sessionCounter] = {host: socket.id, clients: {}, game: new Game()};
 
-        session = sessions[sessionCounter];
-        game = session.game;
-      } else {
-        // socket.join('gameRoom');
-        session = sessions[sessionCounter];
+        sessionNumber = sessionCounter;
+        session = sessions[sessionNumber];
         game = session.game;
 
+        socket.join(sessionCounter);
+        socket.emit('sessionNumber', sessionNumber);
+
+        sessionCounter++;
+      } else {
+        sessionNumber = data.sessionNumber;
+        session = sessions[sessionNumber];
+        game = session.game;
+
+        socket.join(data.sessionNumber);
         session.clients[socket.id] = {};
       }
     });
@@ -35,30 +41,35 @@ module.exports = function(io) {
         // game for a new question
         game.nextQuestion();
       }
-      socket.broadcast.emit('question.submit', game.currentQuestion);
+      socket.broadcast.to(sessionNumber).emit('question.submit', game.currentQuestion);
     });
 
     socket.on('question.choose', function(questionId) {
       var choices = game.getChoices(questionId, function(choices) {
         socket.emit('choices', choices);
-        socket.broadcast.emit('question.choose', {currentQuestion: game.currentQuestion, choices: choices});
+        socket.broadcast.to(sessionNumber).emit('question.choose', {currentQuestion: game.currentQuestion, choices: choices});
       });
     });
 
     socket.on('question.review', function() {
       var results = game.getQuestionResults();
       socket.emit('results', results);
-      socket.broadcast.emit('question.review', game.currentQuestion);
+      socket.broadcast.to(sessionNumber).emit('question.review', game.currentQuestion);
     });
 
     socket.on('final', function() {
-      socket.broadcast.emit('final');
+      socket.broadcast.to(sessionNumber).emit('final');
     });
 
     // Client events
     socket.on('setName', function(name) {
       session.clients[socket.id]['name'] = name;
-      socket.broadcast.to(session.host).emit('clientUpdate', session.clients);
+
+      if (!game.started) {
+        socket.broadcast.to(session.host).emit('clientUpdate', session.clients);
+      } else {
+        game.addPlayer(socket.id, name);
+      }
     });
 
     socket.on('submitAnswer', function(answer) {

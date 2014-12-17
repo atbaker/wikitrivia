@@ -20,6 +20,10 @@ module.exports = function() {
     this.started = true;
   };
 
+  game.addPlayer = function(socketId, name) {
+    this.players[socketId] = {name: name, score: 0};
+  };
+
   game.recordAnswer = function(client, answer) {
     this.answers[client] = {text: answer, choosers: []};
   };
