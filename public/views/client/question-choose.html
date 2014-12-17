@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <h2>Question #{{questionCounter}}</h2>
     <p ng-repeat="choice in choices">
-      <button ng-click="submitChoice(choice.submitter)" ng-bind="choice.text" type="button" class="btn btn-block btn-primary"></button>
+      <button ng-click="submitChoice(choice.submitter)" ng-bind="choice.text" ng-disabled="submitted" type="button" class="btn btn-block btn-primary"></button>
     </p>
   </div>
 </div>

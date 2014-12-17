@@ -6,7 +6,7 @@
         <label class="control-label" for="inputAnswer">Your answer</label>
         <input ng-model="answer" type="text" class="form-control" name="answer" id="inputAnswer" autocapitalize="off" required>
       </div>
-      <button type="submit" class="btn btn-block btn-primary">Submit</button>
+      <button ng-disabled="submitted" type="submit" class="btn btn-block btn-primary">Submit</button>
     </form>
   </div>
 </div>

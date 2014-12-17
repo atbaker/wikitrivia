@@ -6,7 +6,7 @@
         <label class="control-label" for="inputName">Your name</label>
         <input type="text" class="form-control" name="name" id="inputName" ng-model="name" required>
       </div>
-      <button type="submit" class="btn btn-block btn-primary">Set name</button>
+      <button ng-disabled="submitted" type="submit" class="btn btn-block btn-primary">Set name</button>
     </form>
   </div>
 </div>

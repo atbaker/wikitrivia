@@ -94,7 +94,9 @@ angular.module('controllers', [])
   $scope.scoreboard = scoreboard;
 })
 
-.controller('ClientCtrl', function($state, socket) {
+.controller('ClientCtrl', function($scope, $state, socket) {
+  $scope.submitted = false;
+
   socket.on('question.submit', function(questionCounter) {
     $state.go('client.question.submit', {questionCounter: questionCounter});
   });
@@ -116,6 +118,7 @@ angular.module('controllers', [])
   socket.emit('register', {client: 'client', sessionNumber: $stateParams.sessionNumber});
 
   $scope.setName = function(name) {
+    $scope.submitted = true;
     socket.emit('setName', name);
   };
 })
@@ -126,6 +129,7 @@ angular.module('controllers', [])
 
 .controller('ClientQuestionSubmitCtrl', function($scope, socket) {
   $scope.submitAnswer = function(answer) {
+    $scope.submitted = true;
     socket.emit('submitAnswer', answer);
   };
 })
@@ -134,6 +138,7 @@ angular.module('controllers', [])
   $scope.choices = $stateParams.choices;
 
   $scope.submitChoice = function(choice) {
+    $scope.submitted = true;
     socket.emit('submitChoice', choice);
   };
 });
