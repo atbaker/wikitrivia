@@ -41,8 +41,39 @@ angular.module('controllers', [])
   });
 
   socket.on('results', function(results) {
-    $scope.answers = results.answers;
     $scope.clients = results.players;
+
+    var getNames = function(socketIds, players) {
+      var names = [];
+      for (var i=0; i<socketIds.length; i++) {
+        names.push(players[socketIds[i]].name);
+      }
+      return names;
+    };
+    
+    $scope.goodLies = [];
+    $scope.badLies = [];
+    for (var answerText in results.answers) {
+      var answer = results.answers[answerText];
+
+      // Clean up the answer data a little
+      answer.text = answerText;
+      answer.submitters = getNames(answer.submitters, results.players);
+      answer.choosers = getNames(answer.choosers, results.players);
+
+      if (!answer.truth) {
+        if (answer.choosers.length > 0) {
+          // Someone picked this lie - it's a good one
+          $scope.goodLies.push(answer);
+        } else {
+          $scope.badLies.push(answer);
+        }
+      } else {
+        $scope.truth = answer;
+        console.log($scope.truth.choosers);
+        console.log($scope.truth.submitters);
+      }
+    }
   });
 })
 

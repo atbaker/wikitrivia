@@ -1,5 +1,5 @@
 <div ng-switch="$state.current.name" class="row">
-  <div class="col-md-8">
+  <div class="col-md-9">
     <ul class="list-inline">
       <li><h2>Question {{questionIndex + 1}} of {{questions.length}}</h2></li>
       <li class="pull-right next-section">
@@ -15,7 +15,7 @@
     <ui-view/>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <h2>Players:</h2>
     <ul>
       <li ng-repeat="client in clients">

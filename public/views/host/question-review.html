@@ -1,6 +1,60 @@
-<h3>Who chose what</h3>
-<ul>
-  <li ng-repeat="(player, answer) in answers">
-    <strong>{{answer.text}}</strong> <span ng-if="clients[player]">({{ clients[player].name }}'s lie)</span><span ng-if="!clients[player]">(the truth)</span> was chosen by <span ng-repeat="chooser in answer.choosers">{{ clients[chooser].name }}</span>
-  </li>
-</ul>
+<h3>The truth was: <strong>{{truth.text}}</strong></h3>
+
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading"><h4>Good lies</h4></div>
+      <div class="panel-body">
+        <p>50 points awarded for each person who chooses your lie</p>
+        <ul>
+          <li ng-repeat="answer in goodLies">
+            <strong>{{answer.text}}</strong> ({{answer.submitters.join(' and ')}}'s lie) was chosen by {{answer.choosers.join(' and ')}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel panel-danger">
+      <div class="panel-heading"><h4>Awful lies</h4></div>
+      <div class="panel-body">
+        <p>0 points - you're terrible</p>
+        <ul>
+          <li ng-repeat="answer in badLies">
+            <strong>{{answer.text}}</strong> ({{answer.submitters.join(' and ')}}'s lie) didn't fool anybody
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="panel panel-success">
+      <div class="panel-heading"><h4>Truth pickers</h4></div>
+      <div class="panel-body">
+        <p>100 points for finding the truth. These people got it right:</p>
+        <ul>
+          <li ng-repeat="chooser in truth.choosers">{{ chooser }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>Truth guessers</h4></div>
+      <div class="panel-body">
+        <p>An extra 100 points if you guessed the truth when submitting your lie</p>
+        <ul>
+          <li ng-repeat="submitter in truth.submitters">{{ submitter }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
