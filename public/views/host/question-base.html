@@ -1,13 +1,16 @@
 <div ng-switch="$state.current.name" class="row">
   <div class="col-md-8">
-    <h2>Question {{questionIndex + 1}} of {{questions.length}}</h2>
+    <ul class="list-inline">
+      <li><h2>Question {{questionIndex + 1}} of {{questions.length}}</h2></li>
+      <li class="pull-right next-section">
+        <!-- Switch button on state -->
+        <a ng-switch-when="host.question.submit" ui-sref="host.question.choose({id: currentQuestion._id})" class="btn btn-primary">Choose answers <i class="fa fa-arrow-right"></i></a>
+        <a ng-switch-when="host.question.choose" ui-sref="host.question.review({id: currentQuestion._id})" class="btn btn-primary">Question results <i class="fa fa-arrow-right"></i></a>
+        <button ng-switch-when="host.question.review" ng-click="nextQuestion()" type="button" class="btn btn-primary">Next question <i class="fa fa-arrow-right"></i></button>
+      </li>
+    </ul>
     <h5 ng-bind="question.title"></h5>
     <p class="lead" ng-bind="question.question"></p>
-
-    <!-- Switch button on state -->
-    <a ng-switch-when="host.question.submit" ui-sref="host.question.choose({id: currentQuestion._id})" class="btn btn-primary">Choose answers</a>
-    <a ng-switch-when="host.question.choose" ui-sref="host.question.review({id: currentQuestion._id})" class="btn btn-primary">Question results</a>
-    <button ng-switch-when="host.question.review" ng-click="nextQuestion()" type="button" class="btn btn-primary">Next question</button>
 
     <ui-view/>
   </div>
