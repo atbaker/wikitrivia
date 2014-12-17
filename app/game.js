@@ -5,7 +5,7 @@ var utils    = require('./utils');
 
 module.exports = function() {
   var game = {
-    answers: {},
+    answers: {}, // Keyed on answer text, each property is a list of who authored that answer
     responses: [],
     currentQuestion: 0,
     started: false
@@ -24,18 +24,20 @@ module.exports = function() {
     this.players[socketId] = {name: name, score: 0};
   };
 
-  game.recordAnswer = function(client, answer) {
-    this.answers[client] = {text: answer, choosers: []};
+  game.recordAnswer = function(client, answer, truth) {
+    if (!this.answers.hasOwnProperty(answer)) {
+      this.answers[answer] = {submitters: [client], choosers: [], truth: false};
+    } else {
+      this.answers[answer].submitters.push(client);
+    }
+
+    if (truth === true) {
+      this.answers[answer].truth = true;
+    }
   };
 
   game.getChoices = function(questionId, callback) {
     var self = this;
-    var choices = [];
-
-    // Get the players' answers
-    for (var answer in this.answers) {
-      choices.push({text: this.answers[answer].text, submitter: answer});
-    }
 
     // Add the real answer
     var query = Question.findOne({_id: questionId}, function(err, question) {
@@ -43,9 +45,9 @@ module.exports = function() {
         console.log(err);
       }
 
-      self.answers['real'] = {text: question.answer, choosers: []};
-      choices.push({text: question.answer, submitter: 'real'});
+      self.recordAnswer('truth', question.answer, true);
 
+      var choices = Object.keys(self.answers);
       callback(utils.shuffle(choices));
     });
   };
@@ -62,14 +64,25 @@ module.exports = function() {
     }
 
     // update scores
-    for (var player in this.answers) {
-      var answer = this.answers[player];
-      if (player === 'real') {
-        for (var i=0; i < answer.choosers.length; i++) {
+    for (var answerText in this.answers) {
+      var answer = this.answers[answerText];
+
+      if (answer.truth) {
+        // Award 100 points to each of the submitters
+        for (var i=0; i<answer.submitters.length; i++) {
+          if (answer.submitters[i] !== 'truth') {
+            this.players[answer.submitters[i]].score += 100;
+          }
+        }
+        // Award 100 points to each of the choosers
+        for (var i=0; i<answer.choosers.length; i++) {
           this.players[answer.choosers[i]].score += 100;
         }
       } else {
-        this.players[player].score += answer.choosers.length * 50;
+        // Award 50 points to each submitter for each player who chose the lie
+        for (var i=0; i<answer.submitters.length; i++) {
+          this.players[answer.submitters[i]].score += answer.choosers.length * 50;
+        }
       }
     }
 
