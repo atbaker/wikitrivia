@@ -3,10 +3,6 @@
     <h2>Game over</h2>
     <p class="lead">Final standings:</p>
 
-    <!-- Joke mp3, remove later -->
-    <audio src="https://s3.amazonaws.com/wedann/PartySpockAnthem.mp3" controls autoplay loop>
-    </audio>
-
     <ul>
       <li ng-repeat="client in scoreboard">
         {{ client.name }} <strong ng-bind="client.score"></strong>
