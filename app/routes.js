@@ -4,9 +4,9 @@ var Question = require('./models/question');
 
 module.exports = function(app) {
   app.get('/api/questions', function(req, res) {
-    var query = Question.find().limit(10);
+    // var query = Question.find().limit(10);
 
-    query.exec(function(err, questions) {
+    Question.generateQuestionSet(function(err, questions) {
       if (err) {
         res.send(err);
       }
