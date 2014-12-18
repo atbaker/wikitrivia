@@ -69,7 +69,6 @@ module.exports = function(io) {
     // Client events
     socket.on('setName', function(name) {
       if (session === undefined) {
-        socket.close();
         return;
       }
 
@@ -84,7 +83,6 @@ module.exports = function(io) {
 
     socket.on('submitAnswer', function(answer) {
       if (session === undefined) {
-        socket.close();
         return;
       }
 
@@ -94,7 +92,6 @@ module.exports = function(io) {
 
     socket.on('submitChoice', function(choice) {
       if (session === undefined) {
-        socket.close();
         return;
       }
 
