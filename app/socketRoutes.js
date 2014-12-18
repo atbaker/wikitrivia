@@ -68,6 +68,11 @@ module.exports = function(io) {
 
     // Client events
     socket.on('setName', function(name) {
+      if (session === undefined) {
+        socket.close();
+        return;
+      }
+
       session.clients[socket.id]['name'] = name;
 
       if (!game.started) {
@@ -78,11 +83,21 @@ module.exports = function(io) {
     });
 
     socket.on('submitAnswer', function(answer) {
+      if (session === undefined) {
+        socket.close();
+        return;
+      }
+
       game.recordAnswer(socket.id, answer);
       socket.broadcast.to(session.host).emit('answerSubmitted', socket.id);
     });
 
     socket.on('submitChoice', function(choice) {
+      if (session === undefined) {
+        socket.close();
+        return;
+      }
+
       game.recordChoice(socket.id, choice);
       socket.broadcast.to(session.host).emit('choiceSubmitted', socket.id);
     });
