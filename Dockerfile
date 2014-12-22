@@ -12,7 +12,7 @@ COPY package.json /usr/src/app/
 RUN npm install
 
 # Install bower components
-COPY bower.json /usr/src/app/
+COPY bower.json .bowerrc /usr/src/app/
 RUN bower install --config.interactive=false --allow-root
 
 COPY . /usr/src/app
