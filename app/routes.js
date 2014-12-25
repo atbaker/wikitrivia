@@ -13,6 +13,15 @@ module.exports = function(app) {
       res.json(questions);
     });
   });
+
+  app.get('/api/articles', function(req, res) {
+    Question.find().distinct('title', function(err, titles) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(titles);
+    });
+  });
   
   app.get('*', function(req, res) {
     res.sendfile('./public/index.html');

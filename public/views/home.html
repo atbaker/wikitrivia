@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-md-6 text-center">
+  <div class="col-md-4 text-center">
     <h2>Start a game</h2>
     <a ui-sref="host.lobby" class="btn btn-primary">Enter lobby</a>
   </div>
 
-  <div class="col-md-6 text-center">
+  <div class="col-md-4 text-center">
     <h2>Join a game</h2>
     <form role="form" name="sessionForm" class="form-inline" ng-submit="joinSession(sessionNumber)" novalidate>
       <div class="form-group">
@@ -13,5 +13,12 @@
       </div>
       <button type="submit" class="btn btn-primary">Join game</button>
     </form>
+  </div>
+
+  <div class="col-md-4">
+    <h3>Currently loaded articles</h3>
+    <ul>
+      <li ng-repeat="title in titles" ng-bind="title"></li>
+    </ul>
   </div>
 </div>

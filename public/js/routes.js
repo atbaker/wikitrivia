@@ -7,7 +7,12 @@ angular.module('routes', ['ui.router'])
     .state('home', {
       url: '/',
       templateUrl: 'views/home.html',
-      controller: 'HomeCtrl'
+      controller: 'HomeCtrl',
+      resolve: {
+        titles: function(Article) {
+          return Article.query().$promise;
+        }
+      }
     })
 
     .state('host', {

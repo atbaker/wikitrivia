@@ -2,7 +2,9 @@
 
 angular.module('controllers', [])
 
-.controller('HomeCtrl', function($scope, $state) {
+.controller('HomeCtrl', function($scope, $state, titles) {
+  $scope.titles = titles;
+
   $scope.joinSession = function(sessionNumber) {
     $state.go('client.lobby', {sessionNumber: sessionNumber});
   };
