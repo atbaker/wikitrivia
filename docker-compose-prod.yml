@@ -1,4 +1,4 @@
-# Fig configuration file for Wikitrivia
+# Docker-compose file for Wikitrivia production
 
 node:
   image: atbaker/wikitrivia
@@ -8,10 +8,10 @@ node:
     - "80:8080"
 
 data:
-  image: mongo:2.6
+  image: mongo:3
   command: echo 'Data-only container'
 
 db:
-  image: mongo:2.6
+  image: mongo:3
   volumes_from:
     - data

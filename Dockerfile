@@ -1,4 +1,4 @@
-FROM node:0.10
+FROM node:0.12
 
 # Install Bower
 RUN npm install -g bower \
