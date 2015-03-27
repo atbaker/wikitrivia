@@ -1,5 +1,8 @@
 // server.js
 
+// New Relic application monitoring
+require('newrelic');
+
 // modules
 var express        = require('express');
 var app            = express();
