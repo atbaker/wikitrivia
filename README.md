@@ -7,9 +7,7 @@ Wikitrivia
 
 Wikitrivia is a game where you fill in the blanks in sentences pulled from Wikipedia articles, trying to fool your friends with the most convincing answer.
 
-**Play it yourself at [http://wikitrivia.atbaker.me/](http://wikitrivia.atbaker.me/).**
-
-It was created for the Natural Language Processing edition of the DC [Monthly Challenge](http://www.meetup.com/TrackMaven-Monthly-Challenge/events/218683569/) meetup. You can learn more about Wikitrivia in [this presentation](http://slides.com/atbaker/trackmaven-monthly-challenge-demo).
+**Play it yourself at [http://wikitrivia.atbaker.me/](http://wikitrivia.atbaker.me/).** Or, learn about its origins in [this presentation](http://slides.com/atbaker/trackmaven-monthly-challenge-demo).
 
 Questions are generated from Wikipedia articles using a companion Python script, [wikipedia-question-generator](https://github.com/atbaker/wikipedia-question-generator).
 
